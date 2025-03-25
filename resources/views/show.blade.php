@@ -49,7 +49,7 @@
             {{-- Action Buttons --}}
             <div class="grid grid-cols-3 gap-4">
                 {{-- Edit Button --}}
-                <a href="{{ route('task.edit', ['task' => $task->id]) }}" class="inline-flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition duration-300 ease-in-out transform hover:scale-105 text-center h-10">
+                <a href="{{ route('task.edit', ['task' => $task->id]) }}" class="inline-flex items-center justify-center bg-indigo-500 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition duration-300 ease-in-out transform hover:scale-105 text-center h-10">
                     Edit
                 </a>
 
@@ -58,7 +58,7 @@
                     @csrf
                     @method('PUT')
                     <button type="submit" class="w-full inline-flex items-center justify-center h-10
-                        {{ $task->completed ? 'bg-yellow-600 hover:bg-yellow-700' : 'bg-green-600 hover:bg-green-700' }}
+                        {{ $task->completed ? 'bg-indigo-500  hover:bg-yellow-700' : 'bg-indigo-500 hover:bg-green-700' }}
                         text-white font-bold py-3 px-4 rounded-lg transition duration-300 ease-in-out transform hover:scale-105 text-center">
 
                         {{ $task->completed ? 'Incomplete' : 'Complete' }}
@@ -69,7 +69,7 @@
                 <form action="{{ route('task.destroy', ['task' => $task->id]) }}" method="POST" class="w-full" onsubmit="return confirm('Are you sure you want to delete this task?');">
                     @csrf
                     @method('DELETE')
-                    <button type="submit" class="w-full inline-flex items-center justify-center bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-4 rounded-lg transition duration-300 ease-in-out transform hover:scale-105 text-center h-10">
+                    <button type="submit" class="w-full inline-flex items-center justify-center bg-indigo-500 hover:bg-red-700 text-white font-bold py-3 px-4 rounded-lg transition duration-300 ease-in-out transform hover:scale-105 text-center h-10">
                         Delete
                     </button>
                 </form>
