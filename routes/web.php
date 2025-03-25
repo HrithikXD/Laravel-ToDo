@@ -1,123 +1,21 @@
 <?php
 
-use App\Http\Requests\TaskRequest;
-use App\Models\Task;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
+use App\Http\Controllers\TaskController;
 use Illuminate\Support\Facades\Route;
-
-// class Task
-// {
-//     public function __construct(
-//         public int $id,
-//         public string $title,
-//         public string $description,
-//         public ?string $long_description,
-//         public bool $complete,
-//         public string $created_at,
-//         public string $updated_at
-//     ){}
-// }
-// $tasks = [
-//     new Task(
-//         1,
-//         'Workout',
-//         'Task 1 desc',
-//         'Task 1 long desc',
-//         false,
-//         '2025-03-01 12:00:00',
-//         '2025-03-01 12:00:00'
-//     ),
-//     new Task(
-//         2,
-//         'Gaming',
-//         'Task 2 desc',
-//         'Task 2 long desc',
-//         false,
-//         '2025-03-01 12:00:00',
-//         '2025-03-01 12:00:00'
-//     ),
-//     new Task(
-//         3,
-//         'Learning',
-//         'Task 3 desc',
-//         'Task 3 long desc',
-//         false,
-//         '2025-03-01 12:00:00',
-//         '2025-03-01 12:00:00'
-//     ),
-// ];
 
 Route::get('/', function(){
     return redirect()->route('task.index');
 });
 
-//GET all task
-Route::get('/tasks', function () {
-    return view('index',[
-        'tasks'=> Task::latest()->paginate()
-    ]);
-})->name('task.index');
 
-//Get create task
-Route::view('/tasks/create', 'create')->name('task.create');
+Route::PUT('/task/{task}/complete', [TaskController::class, 'complete'])->name('task.complete');
 
-//Get edit task
-Route::get('/tasks/{task}/edit', function (Task $task) {
-    return view('edit',['task'=>$task]);
-})->name('task.edit');
+Route::GET('/task/completed', [TaskController::class, 'completedTask'])->name('task.complete.list');
 
-
-//GET a single task
-Route::get('/tasks/{task}', function (Task $task) {
-    return view('show',['task'=>$task]);
-})->name('task.show');
-
-//POST a task
-Route::POST('/tasks', function(TaskRequest $request){
-
-    // $data = $request->validated();
-
-    // $task = new Task;
-    // $task->title = $data['title'];
-    // $task->description = $data['description'];
-    // $task->long_description = $data['long_description'];
-    // $task->save();
-    $task = Task::create($request->validated());
-
-    return redirect()->route('task.show', ['task'=>$task->id])
-    ->with('success', 'Task created successfully');
-})->name('tasks.store');
-
-//PUT edit task
-Route::PUT('/tasks/{task}', function(Task $task, TaskRequest $request){
-
-    // $data = $request->validated();
-
-    // $task->title = $data['title'];
-    // $task->description = $data['description'];
-    // $task->long_description = $data['long_description'];
-    // $task->save();
-    $task->update($request->validated());
-    return redirect()->route('task.show', ['task'=>$task->id])
-    ->with('success', 'Task updated successfully');
-})->name('tasks.update');
-
-//Delete task
-Route::DELETE('/tasks/{task}', function(Task $task){
-    $task->delete();
-    return redirect()->route('task.index')->with('success', 'Task deleted successfully');
-})->name('tasks.destroy');
+Route::resource('task', TaskController::class);
 
 Route::fallback(function(){
-    return 'Still got somewhere';
+    return redirect()->route('task.index');;
 });
-
-//PUT mark as complete
-Route::PUT('/tasks/{task}', function(Task $task){
-    $task->toggleComplete();
-    return redirect()->back()->with('success', 'Task updated successfully');
-})->name('tasks.complete');
-
 
 ?>
